@@ -21,6 +21,9 @@ with open(elf_path, 'rb') as f:
         sections.append(section.name)
         sizes.append(section['sh_size'])
 
+    print(sections)
+    print(sizes)
+
 # Convert sizes to numpy array
 sizes = np.array(sizes)
 sizes_normalized = sizes / sizes.max() if sizes.max() != 0 else sizes
