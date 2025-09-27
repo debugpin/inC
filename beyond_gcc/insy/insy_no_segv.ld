@@ -1,4 +1,4 @@
-/* tiny.ld - minimal but correct: creates a PT_LOAD for .text and places code
+/* insy.ld - minimal but correct: creates a PT_LOAD for .text and places code
    just after the ELF headers so load addresses line up. Works on x86-64. */
 
 OUTPUT_FORMAT("elf64-x86-64")

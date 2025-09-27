@@ -1,7 +1,7 @@
-global _start
-
+; insy.s
 section .text
+global _start
 _start:
-    mov rax, 60     ; syscall number for exit
-    xor rdi, rdi    ; exit code 0
+    mov rax, 60     ; syscall: exit
+    xor rdi, rdi    ; status = 0
     syscall
