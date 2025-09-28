@@ -1,6 +1,6 @@
 # Smallest GCC
 
-`gcc -o smallest_gcc smallest_gcc.c`
+`gcc -o small small.c`
 
 ## Smaller still
 
@@ -18,14 +18,12 @@ Together, they’re the scaffolding around your main. Without them, you’re in 
 
 If you compile with -nostartfiles or -nostdlib, you skip these and have to provide _start yourself, as shown above.
 
-## Compiled and Assembled but not Linked
-Perfect — you’ve asked for a **line-by-line breakdown** of the assembly output from compiling a minimal C program with GCC. Let’s go through this carefully.
+## Explanation of small.s
 
-This looks like the assembly produced by `gcc -S -fno-asynchronous-unwind-tables -fno-stack-protector smallest_gcc.c` or something close.
+`gcc -S -fno-asynchronous-unwind-tables -fno-stack-protector smallest_gcc.c`
 
----
 
-## 🔹 High-level overview
+## High-level overview
 
 * The file is in **AT\&T syntax** (default for GCC/`as`).
 * It defines a single function `main` that does almost nothing.
@@ -33,7 +31,7 @@ This looks like the assembly produced by `gcc -S -fno-asynchronous-unwind-tables
 
 ---
 
-## 🔹 Detailed breakdown
+## Detailed breakdown
 
 ```asm
 	.file	"smallest_gcc.c"
@@ -78,9 +76,7 @@ main:
 	endbr64
 ```
 
-🔒 This is an instruction for Intel CET (Control-flow Enforcement Technology).
-It marks a valid target for indirect branches (helps mitigate ROP/JOP attacks).
-On older CPUs, it’s just a NOP.
+This is an instruction for Intel CET (Control-flow Enforcement Technology). It marks a valid target for indirect branches (helps mitigate ROP/JOP attacks). On older CPUs, it’s just a NOP.
 
 ---
 
@@ -145,8 +141,7 @@ Tell assembler the size of `main` is the difference between current location and
 	.ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
 ```
 
-Compiler identification string. Stored in ELF `.comment` section.
-Not executable code.
+Compiler identification string. Stored in ELF `.comment` section. Not executable code.
 
 ---
 
@@ -154,8 +149,7 @@ Not executable code.
 	.section	.note.GNU-stack,"",@progbits
 ```
 
-Marks that this object doesn’t need an executable stack.
-Linux uses this for security (non-executable stack protection).
+Marks that this object doesn’t need an executable stack. Linux uses this for security (non-executable stack protection).
 
 ---
 
@@ -191,7 +185,7 @@ These notes help the dynamic loader know what CPU/security features are expected
 
 ---
 
-## 🔹 Summary
+## Summary
 
 So your file contains:
 
@@ -204,9 +198,4 @@ So your file contains:
    * `.note.GNU-stack` (stack executable flag)
    * `.note.gnu.property` (CET / feature notes)
 
-Only the `push`, `mov`, `pop`, `ret`, `endbr64`, and `nop` are real instructions executed at runtime.
-Everything else is ELF bookkeeping.
-
----
-
-👉 Do you want me to also show you what the **binary actually looks like in hex** (the machine code bytes only, stripped of directives), so you can compare how much of this assembly actually turns into runtime instructions?
+Only the `push`, `mov`, `pop`, `ret`, `endbr64`, and `nop` are real instructions executed at runtime. Everything else is ELF bookkeeping.
