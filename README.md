@@ -4,6 +4,9 @@
 ## What is this?
 An experiment to see how much of an ELF binary executable can be stripped down without running into issues such as segmentation faults.
 
+## Why inC?
+To me, insy sounded like something very small and the term insy reminded me of [the classic nursery rhyme, Incy Wincy spider](https://wordsforlife.org.uk/activities/incy-wincy-spider/).
+
 ## What did we learn?
 I've written a blog post to accompany this experiment which you can find [here](https://debugpin.io/posts/shrinking-binaries/).
 
